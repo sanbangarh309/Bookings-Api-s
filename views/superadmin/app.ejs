@@ -1,0 +1,86 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BooksZen <%= page %></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baseurl" content="http://localhost:4200">
+    <!-- favicon
+		============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/admin/img/favicon.ico">
+    <!-- Google Fonts
+		============================================ -->
+    <link href="/assets/superadmin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/superadmin/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="/assets/superadmin/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="/assets/superadmin/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="/assets/superadmin/css/animate.css" rel="stylesheet">
+    <link href="/assets/superadmin/css/style.css" rel="stylesheet">
+    <%+ yield('custom_css') %>
+</head>
+
+<body>
+  <div id="wrapper">
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <% include ./layouts/sidebar %>
+    <!-- Start Welcome area -->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+    <% include ./layouts/header %>
+    <%+ yield('content') %>
+    </div>
+  </div>
+   <!-- Mainly scripts -->
+   <script src="/assets/superadmin/js/jquery-3.1.1.min.js"></script>
+   <script src="/assets/superadmin/js/popper.min.js"></script>
+   <script src="/assets/superadmin/js/bootstrap.js"></script>
+   <script src="/assets/superadmin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+   <script src="/assets/superadmin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+   <!-- Flot -->
+   <script src="/assets/superadmin/js/plugins/flot/jquery.flot.js"></script>
+   <script src="/assets/superadmin/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+   <!-- <script src="/assets/superadmin/js/plugins/flot/jquery.flot.spline.js"></script> -->
+   <!-- <script src="/assets/superadmin/js/plugins/flot/jquery.flot.resize.js"></script> -->
+   <!-- <script src="/assets/superadmin/js/plugins/flot/jquery.flot.pie.js"></script> -->
+
+   <!-- Peity -->
+   <script src="/assets/superadmin/js/plugins/peity/jquery.peity.min.js"></script>
+   <script src="/assets/superadmin/js/demo/peity-demo.js"></script>
+
+   <!-- Custom and plugin javascript -->
+   <script src="/assets/superadmin/js/inspinia.js"></script>
+   <script src="/assets/superadmin/js/plugins/pace/pace.min.js"></script>
+
+   <!-- jQuery UI -->
+   <script src="/assets/superadmin/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+   <!-- GITTER -->
+   <!-- <script src="/assets/superadmin/js/plugins/gritter/jquery.gritter.min.js"></script> -->
+
+   <!-- Sparkline -->
+   <!-- <script src="/assets/superadmin/js/plugins/sparkline/jquery.sparkline.min.js"></script> -->
+
+   <!-- Sparkline demo data  -->
+   <!-- <script src="/assets/superadmin/js/demo/sparkline-demo.js"></script> -->
+
+   <!-- ChartJS-->
+   <!-- <script src="/assets/superadmin/js/plugins/chartJs/Chart.min.js"></script> -->
+
+   <!-- Toastr -->
+   <script src="/assets/superadmin/js/plugins/toastr/toastr.min.js"></script>
+   <script src="/assets/admin/js/axios.js"></script>
+    <%+ yield('javascript') %>
+</body>
+</html>
+

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta name="baseurl" content="http://localhost:4200">
+<title>Books Zen Login</title>
+<link rel="stylesheet" href="/assets/admin/css/bootstrap.min.css">
+<link href="/assets/admin/css/login.css" rel="stylesheet" />
+<script src="/assets/admin/js/vendor/jquery-1.12.4.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+</head>
+<body>
+<div class="container" style="padding-top: 76px;">
+    	<div class="row">
+    	<h1 style="text-align: center;padding: 19px;">BooksZen Admin Login</h1>
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-12">
+								<a href="#" class="active" id="login-form-link">Login</a>
+							</div>
+							<div class="col-xs-12" id="msg_block" style="display:none;">
+								<span>Login</span>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<form id="login-form" role="form" style="display: block;">
+									<div class="form-group">
+										<input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Enter Email" value="">
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+											</div>
+										</div>
+									</div>
+									<!-- <div class="form-group">
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="text-center">
+													<a href="https://phpoll.com/recover" tabindex="5" class="forgot-password">Forgot Password?</a>
+												</div>
+											</div>
+										</div>
+									</div> -->
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="/assets/admin/js/axios.js"></script>
+	<script type="text/javascript">
+		let baseurl = $('meta[name=baseurl]').attr("content");
+		$('form#login-form').on('submit', function(e){
+			let data = new FormData(this);
+			axios.post(baseurl+'/superadmin/login', data).then((response) => {
+				$('#msg_block').show();
+				$('#msg_block span').text(response.data.msg);
+				$('#msg_block span').css('color','green');
+				setTimeout(function(){ window.location.href = baseurl+'/superadmin'; }, 1000);
+				console.log(response);	
+			})
+			.catch((error) => {
+				$('#msg_block').show();
+				$('#msg_block span').text(error.response.data.msg);
+				$('#msg_block span').css('color','red');
+				console.log(error.response.data.msg);							
+			});
+			return false;	
+		});
+	</script>
+	</body>
+	</html>
