@@ -1,0 +1,124 @@
+<%+ extend('superadmin/app') %>
+<%+ section('custom_css') %>
+<link href="/assets/superadmin/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet">
+<style>
+.bootstrap-tagsinput{
+    width: 100%;
+}
+</style>
+<%+ endSection %>
+<%+ section('content') %>
+<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>Users</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/superadmin">Home</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <strong>Users</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="sk-spinner sk-spinner-double-bounce">
+                        <div class="sk-double-bounce1"></div>
+                        <div class="sk-double-bounce2"></div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="user_table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                    <th>User Type</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% users.forEach(function(user) { %>
+                                <tr id="<%= user.id %>">
+                                    <td><input type="checkbox"  class="i-checks" name="input[]"></td>
+                                    <td><span><%= user.name %></span></td>
+                                    <td><span><%= user.email %></span></td>
+                                    <td><%= user.phone %></td>
+                                    <td><%= user.address %></td>
+                                    <td><%= user.type %></td>
+                                    <td><a href="javascript:void(0)" class="edit_user" data-id="<%= user.id %>"><i style="font-size: 24px;" class="fa fa-edit"></i> <span class="text-muted"></span></a><a href="javascript:void(0)" class="delete_user" data-id="<%= user.id %>"><i style="font-size: 24px;" class="fa fa-cut"></i> <span class="text-muted"></span></a></td>
+                                </tr>
+                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<%+ endSection %>
+<%+ section('javascript') %>
+<script src="/assets/superadmin/js/plugins/chosen/chosen.jquery.js"></script>
+<script type="text/javascript">
+let baseurl = $('meta[name=baseurl]').attr("content");
+let fields = ['title','description','plan_for','price','id'];
+$('.chosen-select').chosen({width: "100%"});
+$('#user_table').on('click','.edit_user',function(e){
+    e.preventDefault();
+    $('.ibox-content').toggleClass('sk-loading');
+    axios.get(baseurl+'/superadmin/user/'+$(this).data('id')).then((response) => {	
+        $.each(response.data.msg, function( index, value ) {
+            $('#edit_user_modal input[name="'+index+'"]').val(value);
+        });
+        $('.chosen-select').trigger("chosen:updated");
+        $('#edit_user_modal').modal('show');
+        $('.ibox-content').toggleClass('sk-loading');
+    })
+    .catch((error) => {
+        $('#msg_block').text(error.response.data.msg);
+        $('#msg_block').css('color','red');		
+        $('.ibox-content').toggleClass('sk-loading');					
+    });
+    return false;
+});
+
+$('#user_table').on('click','.delete_user',function(e){
+    e.preventDefault();
+    let id = $(this).data('id');
+    $('.ibox-content').toggleClass('sk-loading');
+    axios.delete(baseurl+'/superadmin/user/'+id).then((response) => {
+        $('#user_table tr#'+id).remove();
+        $('.ibox-content').toggleClass('sk-loading');
+    })
+    .catch((error) => {
+        $('.ibox-content').toggleClass('sk-loading');
+        $('#msg_block').text(error.response.data.msg);
+        $('#msg_block').css('color','red');							
+    });
+});
+
+$('form#edit-user-form').on('submit', function(e){
+        e.preventDefault();
+        let data = new FormData(this);
+        axios.post(baseurl+'/superadmin/update_user', data).then((response) => {
+            $('#msg_block').text(response.data.msg);
+            $('#msg_block').css('color','green');
+            setTimeout(function(){ window.location.href = baseurl+'/superadmin/users'; }, 1000);	
+        })
+        .catch((error) => {
+            $('#msg_block').text(error.response.data.msg);
+            $('#msg_block').css('color','red');							
+        });
+        return false;	
+});
+</script>
+<%+ endSection %>

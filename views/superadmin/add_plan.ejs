@@ -1,7 +1,7 @@
 <%+ extend('superadmin/app') %>
 <%+ section('custom_css') %>
-<link href="/assets/superadmin/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 <link href="/assets/superadmin/css/plugins/summernote/summernote-bs4.css" rel="stylesheet">
+<link href="/assets/superadmin/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet">
 <style>
 .bootstrap-tagsinput{
     width: 100%;
@@ -11,13 +11,13 @@
 <%+ section('content') %>
 <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Blogs</h2>
+            <h2>Plans</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="/superadmin">Home</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Add Blog</strong>
+                    <strong>Add Plan</strong>
                 </li>
             </ol>
         </div>
@@ -35,47 +35,30 @@
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
                         </a>
-                        <!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a> -->
-                        <!-- <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#" class="dropdown-item">Config option 1</a>
-                            </li>
-                            <li><a href="#" class="dropdown-item">Config option 2</a>
-                            </li>
-                        </ul> -->
-                        <!-- <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a> -->
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form id="blog-form">
+                    <form id="plan-form">
                         <div class="form-group  row"><label class="col-sm-2 col-form-label">Title</label>
-                            <div class="col-sm-10"><input type="text" name="title" placeholder="Enter Blog Title" class="form-control"></div>
+                            <div class="col-sm-10"><input type="text" name="title" placeholder="Enter Plan Title" class="form-control"></div>
                         </div>
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group row"><label class="col-sm-2 col-form-label">Body</label>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10"><textarea type="text" name="description" class="form-control summernote"></textarea> 
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group row"><label class="col-sm-2 col-form-label">Image</label>
-                            <div class="col-sm-10 custom-file"><input id="logo" type="file" name="blog_file" class="custom-file-input">
-                                <label for="logo" class="custom-file-label">Choose file...</label></div>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Price</label>
+                            <div class="col-sm-10 custom-file"><input type="text" name="price" placeholder="Enter Plan Price" class="form-control"></div>
                         </div>
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group  row"><label class="col-sm-2 col-form-label">Tags</label>
-                            <div class="col-sm-10"><input type="text" name="tags" data-role="tagsinput" placeholder="Enter Tags" class="form-control"></div>
-                        </div>
-
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group  row"><label class="col-sm-2 col-form-label">Category</label>
-                            <div class="col-sm-10"><input type="text" name="category" data-role="tagsinput" placeholder="Enter Blog Categories" class="form-control"></div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group row"><label class="col-sm-2 col-form-label">Meta Description</label>
-                            <div class="col-sm-10"><textarea type="text" name="meta_desc" class="form-control summernote"></textarea>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">Plan Type</label>
+                            <div class="col-sm-10">
+                                <select data-placeholder="Choose a Plan Type..." name="plan_for" class="chosen-select"  tabindex="2">
+                                    <option value="">Choose a Plan Type</option>
+                                    <option value="month">Monthly</option>
+                                    <option value="year">Yearly</option>
+                                </select>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -102,22 +85,19 @@
 </div> -->
 <%+ endSection %>
 <%+ section('javascript') %>
-<script src="/assets/superadmin/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
 <script src="/assets/superadmin/js/plugins/summernote/summernote-bs4.js"></script>
+<script src="/assets/superadmin/js/plugins/chosen/chosen.jquery.js"></script>
 <script type="text/javascript">
 let baseurl = $('meta[name=baseurl]').attr("content");
     $('.summernote').summernote();
-    $('.custom-file-input').on('change', function() {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').addClass("selected").html(fileName);
-    });
-    $('form#blog-form').on('submit', function(e){
+    $('.chosen-select').chosen({width: "100%"});
+    $('form#plan-form').on('submit', function(e){
         e.preventDefault();
         let data = new FormData(this);
-        axios.post(baseurl+'/superadmin/add_blog', data).then((response) => {
+        axios.post(baseurl+'/superadmin/add_plan', data).then((response) => {
             $('#msg_block').text(response.data.msg);
             $('#msg_block').css('color','green');
-            setTimeout(function(){ window.location.href = baseurl+'/superadmin/blogs'; }, 1000);	
+            setTimeout(function(){ window.location.href = baseurl+'/superadmin/pricing'; }, 1000);	
         })
         .catch((error) => {
             $('#msg_block').text(error.response.data.msg);

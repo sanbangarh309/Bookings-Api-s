@@ -1,7 +1,7 @@
 <%+ extend('superadmin/app') %>
 <%+ section('custom_css') %>
-<link href="/assets/superadmin/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 <link href="/assets/superadmin/css/plugins/summernote/summernote-bs4.css" rel="stylesheet">
+<link href="/assets/superadmin/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet">
 <style>
 .bootstrap-tagsinput{
     width: 100%;
@@ -11,13 +11,13 @@
 <%+ section('content') %>
 <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Blogs</h2>
+            <h2>Plans</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="/superadmin">Home</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Blogs</strong>
+                    <strong>Plans</strong>
                 </li>
             </ol>
         </div>
@@ -78,24 +78,24 @@
                         </div>
                     </div> -->
                     <div class="table-responsive">
-                        <table class="table table-striped" id="blog_table">
+                        <table class="table table-striped" id="plan_table">
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Image</th>
                                     <th>Title</th>
-                                    <th>Date</th>
+                                    <th>Price</th>
+                                    <th>Type</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <% blogs.forEach(function(blog) { %>
-                                <tr id="<%= blog.id %>">
+                            <% plans.forEach(function(plan) { %>
+                                <tr id="<%= plan.id %>">
                                     <td><input type="checkbox"  class="i-checks" name="input[]"></td>
-                                    <td><a href="/admin/detail?model_id=<%= blog._id %>" target="_blank"><img src="/files/blogs/<%= blog.image %>_thumb" class="img-rounded" style="width: 40%;" alt=""></a></td>
-                                    <td><span><%= blog.title %></span></td>
-                                    <td><%= blog.created_at %></td>
-                                    <td><a href="javascript:void(0)" class="edit_blog" data-id="<%= blog.id %>"><i style="font-size: 24px;" class="fa fa-edit"></i> <span class="text-muted"></span></a><a href="javascript:void(0)" class="delete_blog" data-id="<%= blog.id %>"><i style="font-size: 24px;" class="fa fa-cut"></i> <span class="text-muted"></span></a></td>
+                                    <td><span><%= plan.title %></span></td>
+                                    <td><span><%= plan.price %></span></td>
+                                    <td><%= plan.plan_for %></td>
+                                    <td><a href="javascript:void(0)" class="edit_plan" data-id="<%= plan.id %>"><i style="font-size: 24px;" class="fa fa-edit"></i> <span class="text-muted"></span></a><a href="javascript:void(0)" class="delete_plan" data-id="<%= plan.id %>"><i style="font-size: 24px;" class="fa fa-cut"></i> <span class="text-muted"></span></a></td>
                                 </tr>
                             <% }); %>
                             </tbody>
@@ -110,30 +110,28 @@
 </div>
 <%+ endSection %>
 <%+ section('javascript') %>
-<script src="/assets/superadmin/js/plugins/iCheck/icheck.min.js"></script>
-<script src="/assets/superadmin/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
 <script src="/assets/superadmin/js/plugins/summernote/summernote-bs4.js"></script>
+<script src="/assets/superadmin/js/plugins/chosen/chosen.jquery.js"></script>
 <script type="text/javascript">
 let baseurl = $('meta[name=baseurl]').attr("content");
-let fields = ['title','description','tags','category','meta_desc','id'];
+let fields = ['title','description','plan_for','price','id'];
 $('.summernote').summernote();
-$('#blog_table').on('click','.edit_blog',function(e){
+$('.chosen-select').chosen({width: "100%"});
+$('#plan_table').on('click','.edit_plan',function(e){
     e.preventDefault();
     $('.ibox-content').toggleClass('sk-loading');
-    axios.get(baseurl+'/superadmin/blog/'+$(this).data('id')).then((response) => {	
+    axios.get(baseurl+'/superadmin/plan/'+$(this).data('id')).then((response) => {	
         $.each(response.data.msg, function( index, value ) {
-            let field = 'input';
-            if($.trim(index) == 'description' || $.trim(index) == 'meta_desc'){ 
-                field = 'textarea';
-                $('#edit_blog_modal '+field+'[name="'+index+'"]').summernote('code', value);
-            }else if(index =='tags' || index =='category'){
-                $('#edit_blog_modal '+field+'[name="'+index+'"]').tagsinput('add', value);
+            if($.trim(index) == 'description'){ 
+                $('#edit_plan_modal textarea[name="'+index+'"]').summernote('code', value);
+            }else if(index == 'plan_for'){
+                $('#edit_plan_modal select[name="'+index+'"]').val(value);
             }else{
-                $('#edit_blog_modal '+field+'[name="'+index+'"]').val(value);
+                $('#edit_plan_modal input[name="'+index+'"]').val(value);
             }
         });
-        $('#edit_blog_modal input[name="old_image"]').val(response.data.msg.image);
-        $('#edit_blog_modal').modal('show');
+        $('.chosen-select').trigger("chosen:updated");
+        $('#edit_plan_modal').modal('show');
         $('.ibox-content').toggleClass('sk-loading');
     })
     .catch((error) => {
@@ -144,12 +142,12 @@ $('#blog_table').on('click','.edit_blog',function(e){
     return false;
 });
 
-$('#blog_table').on('click','.delete_blog',function(e){
+$('#plan_table').on('click','.delete_plan',function(e){
     e.preventDefault();
     let id = $(this).data('id');
     $('.ibox-content').toggleClass('sk-loading');
-    axios.delete(baseurl+'/superadmin/blog/'+id).then((response) => {
-        $('#blog_table tr#'+id).remove();
+    axios.delete(baseurl+'/superadmin/plan/'+id).then((response) => {
+        $('#plan_table tr#'+id).remove();
         $('.ibox-content').toggleClass('sk-loading');
     })
     .catch((error) => {
@@ -159,13 +157,13 @@ $('#blog_table').on('click','.delete_blog',function(e){
     });
 });
 
-$('form#edit-blog-form').on('submit', function(e){
+$('form#edit-plan-form').on('submit', function(e){
         e.preventDefault();
         let data = new FormData(this);
-        axios.post(baseurl+'/superadmin/update_blog', data).then((response) => {
+        axios.post(baseurl+'/superadmin/update_plan', data).then((response) => {
             $('#msg_block').text(response.data.msg);
             $('#msg_block').css('color','green');
-            setTimeout(function(){ window.location.href = baseurl+'/superadmin/blogs'; }, 1000);	
+            setTimeout(function(){ window.location.href = baseurl+'/superadmin/pricing'; }, 1000);	
         })
         .catch((error) => {
             $('#msg_block').text(error.response.data.msg);
@@ -173,9 +171,5 @@ $('form#edit-blog-form').on('submit', function(e){
         });
         return false;	
 });
-$('.custom-file-input').on('change', function() {
-    let fileName = $(this).val().split('\\').pop();
-    $(this).next('.custom-file-label').addClass("selected").html(fileName);
- });
 </script>
 <%+ endSection %>

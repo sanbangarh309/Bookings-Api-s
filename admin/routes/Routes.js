@@ -40,11 +40,50 @@ module.exports = function(app) {
 		});
 	});
 
+	app.get('/superadmin/pricing', async (req,res) => {
+		try {
+			var plans = await connection.query('SELECT * FROM plans');
+		} catch(err) {
+			throw new Error(err)
+		}
+		res.render(config.directory + '/views/superadmin/pricing', {
+			page: 'Pricing',
+			child_page:'plan_list',
+			plans:plans
+		});
+	});
+
+	app.get('/superadmin/add_plan', function(req,res){
+		res.render(config.directory + '/views/superadmin/add_plan', {
+			page: 'Pricing',
+			child_page:'add_plan'
+		});
+	});
+
 	app.get('/superadmin/add_blog', function(req,res){
-		// return res.redirect('/admin/home');
 		res.render(config.directory + '/views/superadmin/add_blog', {
 			page: 'Blogs',
 			child_page:'add_blog'
+		});
+	});
+
+	app.get('/superadmin/users', async (req,res) => {
+		try {
+			var users = await connection.query('SELECT * FROM users where role_id !=1');
+		} catch(err) {
+			throw new Error(err)
+		}
+		res.render(config.directory + '/views/superadmin/users', {
+			page: 'Team',
+			child_page:'user_list',
+			users:users
+		});
+	});
+
+	app.get('/superadmin/add_user', function(req,res){
+		res.render(config.directory + '/views/superadmin/add_user', {
+			page: 'Team',
+			child_page:'add_user'
 		});
 	});
 

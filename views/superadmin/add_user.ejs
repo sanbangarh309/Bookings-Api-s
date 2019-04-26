@@ -1,0 +1,104 @@
+<%+ extend('superadmin/app') %>
+<%+ section('custom_css') %>
+<link href="/assets/superadmin/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet">
+<%+ endSection %>
+<%+ section('content') %>
+<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>Users</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/superadmin">Home</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <strong>Add user</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5 id="msg_block"></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form id="plan-form">
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10"><input type="text" name="name" placeholder="Enter Name" class="form-control"></div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10"><input type="text" name="email" placeholder="Enter Email" class="form-control"></div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">Phone</label>
+                            <div class="col-sm-10"><input type="text" name="phone" placeholder="Enter Phone" class="form-control"></div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">Address</label>
+                            <div class="col-sm-10"><textarea type="text" name="address" placeholder="Enter Address" class="form-control"></textarea></div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">Role</label>
+                            <div class="col-sm-10">
+                                <select data-placeholder="Choose a Plan Type..." name="role_id" class="chosen-select"  tabindex="2">
+                                    <option value="">Choose a Role</option>
+                                    <option value="2">Executive</option>
+                                    <option value="3">Customer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white btn-sm" type="submit">Cancel</button>
+                                <button class="btn btn-primary btn-sm" type="submit">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="footer">
+    <div class="float-right">
+        10GB of <strong>250GB</strong> Free.
+    </div>
+    <div>
+        <strong>Copyright</strong> Example Company &copy; 2014-2018
+    </div>
+</div> -->
+<%+ endSection %>
+<%+ section('javascript') %>
+<script src="/assets/superadmin/js/plugins/chosen/chosen.jquery.js"></script>
+<script type="text/javascript">
+let baseurl = $('meta[name=baseurl]').attr("content");
+    $('.chosen-select').chosen({width: "100%"});
+    $('form#user-form').on('submit', function(e){
+        e.preventDefault();
+        let data = new FormData(this);
+        axios.post(baseurl+'/superadmin/add_user', data).then((response) => {
+            $('#msg_block').text(response.data.msg);
+            $('#msg_block').css('color','green');
+            setTimeout(function(){ window.location.href = baseurl+'/superadmin/users'; }, 1000);	
+        })
+        .catch((error) => {
+            $('#msg_block').text(error.response.data.msg);
+            $('#msg_block').css('color','red');							
+        });
+        return false;	
+    });
+</script>
+<%+ endSection %>
