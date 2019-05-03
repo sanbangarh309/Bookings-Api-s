@@ -11,6 +11,25 @@ module.exports = function(app) {
 	// var Category = require('../../controllers/Category');
 	var moment = require('moment');
 
+	app.get('/', function(req,res){
+		// return res.redirect('/admin/home');
+		res.render(config.directory + '/views/pages/home', {
+			page: 'Home'
+		});
+	});
+
+	app.get('/blogs', async (req,res) => {
+		try {
+			var blogs = await connection.query('SELECT * FROM blogs');
+		} catch(err) {
+			throw new Error(err)
+		}
+		res.render(config.directory + '/views/pages/blogs', {
+			page: 'Blogs',
+			blogs:blogs
+		});
+	});
+
 	app.get('/admin',VerifyToken, function(req,res){
 		// return res.redirect('/admin/home');
 		res.render(config.directory + '/views/admin/home', {

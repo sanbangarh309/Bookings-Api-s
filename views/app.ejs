@@ -1,0 +1,47 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>BooksZen <%= page %></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="baseurl" content="http://localhost:4200">
+  <link rel="stylesheet" href="/assets/front/css/bootstrap.css">
+  <link rel="stylesheet" href="/assets/front/vendors/linericon/style.css">
+  <link rel="stylesheet" href="/assets/front/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/front/vendors/owl-carousel/owl.carousel.min.css">
+  <link rel="stylesheet" href="/assets/front/vendors/nice-select/css/nice-select.css">
+  <link rel="stylesheet" href="/assets/front/vendors/animate-css/animate.css">
+  <!-- main css -->
+  <link rel="stylesheet" href="/assets/front/css/style.css">
+    <%+ yield('custom_css') %>
+</head>
+<body>
+  <% include ./layouts/header %>
+   <%if (page=='Home') { %>
+     <% include ./layouts/slider %>
+  <% } %>
+  <%+ yield('content') %>
+  <% include ./layouts/footer %>
+  <script src="/assets/front/js/jquery-3.2.1.min.js"></script>
+  <script src="/assets/front/js/popper.js"></script>
+  <script src="/assets/front/js/bootstrap.min.js"></script>
+  <script src="/assets/front/js/stellar.js"></script>
+  
+  <script src="/assets/front/vendors/nice-select/js/jquery.nice-select.min.js"></script>
+  <script src="/assets/front/vendors/isotope/imagesloaded.pkgd.min.js"></script>
+  <script src="/assets/front/vendors/isotope/isotope-min.js"></script>
+  <script src="/assets/front/vendors/owl-carousel/owl.carousel.min.js"></script>
+  <script src="/assets/front/js/jquery.ajaxchimp.min.js"></script>
+  <script src="/assets/front/vendors/counter-up/jquery.waypoints.min.js"></script>
+  <script src="/assets/front/vendors/counter-up/jquery.counterup.min.js"></script>
+  <script src="/assets/front/js/mail-script.js"></script>
+  <!--gmaps Js-->
+  <script src="/assets/front/js/theme.js"></script>
+  <script src="/assets/admin/js/axios.js"></script>
+    <%+ yield('javascript') %>
+</body>
+</html>
+

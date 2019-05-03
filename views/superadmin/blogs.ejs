@@ -116,7 +116,9 @@
 <script type="text/javascript">
 let baseurl = $('meta[name=baseurl]').attr("content");
 let fields = ['title','description','tags','category','meta_desc','id'];
-$('.summernote').summernote();
+$('.summernote').summernote({
+  dialogsInBody: true
+});
 $('#blog_table').on('click','.edit_blog',function(e){
     e.preventDefault();
     $('.ibox-content').toggleClass('sk-loading');

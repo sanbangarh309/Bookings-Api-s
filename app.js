@@ -9,7 +9,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(__dirname + '/public'));
 app.use(session({secret: 'bangarh',resave: true,
     saveUninitialized: true}));
-
 var SuperAdminController = require('./admin/controllers/SuperAdminController');
 app.use('/superadmin', SuperAdminController);
 

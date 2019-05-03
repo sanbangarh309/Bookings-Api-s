@@ -115,7 +115,9 @@
 <script type="text/javascript">
 let baseurl = $('meta[name=baseurl]').attr("content");
 let fields = ['title','description','plan_for','price','id'];
-$('.summernote').summernote();
+$('.summernote').summernote({
+  dialogsInBody: true
+});
 $('.chosen-select').chosen({width: "100%"});
 $('#plan_table').on('click','.edit_plan',function(e){
     e.preventDefault();
